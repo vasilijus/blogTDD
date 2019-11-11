@@ -16,6 +16,9 @@ Route::get('/', function () {
     return view('welcome', ['links'=> $links]);
 });
 
+Route::get('/submit', 'LinkController@index');
+Route::post('/submit','LinkController@post');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
