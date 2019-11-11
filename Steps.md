@@ -180,3 +180,28 @@ class SubmitLinksTest extends TestCase
 {
     use RefreshDatabase;
 ```
+
+
+### Assert Database Fail 
+>  There was 1 failure:
+> 1) Tests\Feature\SubmitLinksTest::guest_can_submit_a_new_link
+> Failed asserting that a row in the table [links] matches the attributes {
+>    "title": "ExampleTitle"
+> }.
+
+> The table is empty.
+
+Can you temporarily add the following tearDown method to the TestCase class to check the DB_CONNECTION environment variable used for each test?
+```
+    function tearDown()
+    {
+        dump(env('DB_CONNECTION'));
+    }
+```
+Output:
+"sqlite"
+R               1 / 1 (100%)
+
+
+
+### Need to create DB SQLITE

@@ -17,36 +17,46 @@ class SubmitLinksTest extends TestCase
 
     use RefreshDatabase;
 
-    public function testExample()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
-    /** @Test - Verify that valid links get saved in the database */
+    /** @test */
     function guest_can_submit_a_new_link()
     {
+        $response = $this->post('/submit',[
+            'title'         => 'ExampleTitle',
+            'url'           => 'http://example.com',
+            'description'   => 'Example description.',
+        ]);
+        
+        $this->assertDatabaseHas('links',[
+            'title'         => 'ExampleTitle',
+        ]);
 
+        // Redirect at the end of creation of link
+        $response
+            ->assertStatus(302)
+            ->assertHeader('Location', url('/'));
+        
+        // Request page and see that the link title is visible on homepage
+        $this->get('/')->assertSee('ExampleTitle');
     }
 
-    /** @Test - When validation fails, links are not in the database */
+    /** @Test */
     function link_is_not_created_if_validation_fails()
     {
-
+        
     }
-    /** @Test - Invalid URLs are not allowed */
+
+    /** @Test */
     function link_is_not_created_with_invalid_url()
     {
 
     }
 
-    /** @Test - Validation should fail when the fields are longer than the max:255 validation rule */
+    /** @Test */
     function max_length_fails_when_too_long()
     {
 
     }
-    /** @Test - Validation should succeed when the fields are long enough according to max:255 */
+    /** @Test */
     function max_length_fails_when_under_max()
     {
 
