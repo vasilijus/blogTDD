@@ -13,6 +13,7 @@ class LinkController extends Controller
     }
 
     public function post(Request $request) {
+        $json = file_get_contents('php://input');
         $data = $request->validate([
             'title' => 'required|max:255',
             'url' => 'required|url|max:255',

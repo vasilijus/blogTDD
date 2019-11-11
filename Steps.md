@@ -165,3 +165,18 @@ First, let’s create a new feature test to test against our route:
 ```
 php artisan make:test SubmitLinksTest
 ```
+
+```
+function guest_can_submit_a_new_link()
+function link_is_not_created_if_validation_fails()
+function link_is_not_created_with_invalid_url()
+function max_length_fails_when_too_long()
+function max_length_fails_when_under_max()
+```
+
+### Test fails, always 500 where 200 expected
+```
+class SubmitLinksTest extends TestCase
+{
+    use RefreshDatabase;
+```
