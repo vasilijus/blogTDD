@@ -79,6 +79,7 @@
                 </div>
             @endif
 
+            
             <div class="content">
                 <div class="title m-b-md">
                     Laravel
@@ -95,6 +96,21 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
+
+           
+
         </div>
+
+        <div class="row">
+            <div class="container">
+            <ul>
+            @foreach($links as $link) 
+            <li><a href="{{ $link->url }}">{{ $link->title }}</a></li>
+            @endforeach
+            </ul>
+
+            </div>
+        </div>
+        
     </body>
 </html>
