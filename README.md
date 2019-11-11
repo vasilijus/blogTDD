@@ -32,10 +32,4 @@ php artisan key:generate
 php artisan migrate:fresh --seed
 ```
 
-Common issue on post validation 
-```
-Add title to the fillable array in your model Post, to allow saving through create and massive methods
-
-protected $fillable = ['title'];
-```
 

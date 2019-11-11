@@ -71,3 +71,97 @@ $factory->define(App\Link::class, function (Faker $faker) {
 ```
 
 ### Restart the server if running
+
+
+
+
+
+
+
+
+
+## Submitting the Form
+With the form in place, we are ready to handle the POST data and validate data. Back in the routes/web.php file, create another route for the POST request:
+
+use Illuminate\Http\Request;
+
+Route::post('/submit', function (Request $request) {
+    $data = $request->validate([
+        'title' => 'required|max:255',
+        'url' => 'required|url|max:255',
+        'description' => 'required|max:255',
+    ]);
+
+    $link = tap(new App\Link($data))->save();
+
+    return redirect('/');
+});
+
+> Next, we use the tap() helper function to create a new Link model instance and then save it. Using tap allows us to call save() and still return the model instance after the save.
+```
+OR USE :
+$link = new \App\Link($data);
+$link->save();
+
+return $link;
+```
+
+
+
+Common issue on post validation 
+```
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Link extends Model
+{
+    protected $fillable = [
+        'title',
+        'url',
+        'description'
+    ];
+}
+```
+### If we wanted to prevent mass-assignment, this is how our code would look:
+```
+$data = $request->validate([
+    'title' => 'required|max:255',
+    'url' => 'required|url|max:255',
+    'description' => 'required|max:255',
+]);
+
+$link = new \App\Link;
+$link->title = $data['title'];
+$link->url = $data['url'];
+$link->description = $data['description'];
+
+// Save the model
+$link->save();
+```
+
+
+## Testing the Form Submission
+
+Before we get started, we need to adjust a few things in our phpunit.xml file so that we can use an in-memory SQLite database. You will need to make sure that you have the proper PHP modules installed.
+```
+<php>
+        <!-- ... -->
+    <env name="DB_CONNECTION" value="sqlite"/>
+    <env name="DB_DATABASE" value=":memory:"/>
+        <!-- ... -->
+</php>
+```
+Next, remove the placeholder test that ships with Laravel:
+```
+rm tests/Feature/ExampleTest.php
+```
+
+We are ready to start testing the /submit form through HTTP requests to make sure that the route validation, saving, and redirecting are working as expected.
+
+First, let’s create a new feature test to test against our route:
+```
+php artisan make:test SubmitLinksTest
+```
